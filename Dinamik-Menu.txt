@@ -1,0 +1,89 @@
+Ete mezanic pahanjvume sargel dinamik menu,aysinqn menu ira submenunerov,voronq iranc hertin karoxen unenal submenunerov,
+apa mer bazan petqa unena hetevyal tesqn
+tbl_menus
+	id
+	name
+	parent_id
+	...
+	...
+	
+paheluc mechn informacian lcumenq hetevyal kerp
+
+id      name        			parent_id
+1		Bnutyun					0
+2		Shinutyun				0
+3		HH Bnutyun				1
+4		USA Bnutyun				1
+5		Armaviri Bnutyun		3
+6		Armaviri Gyux A Bnutyun	5
+...
+...
+Aysinqn parent_id field - n cuyca talis te ov um subna
+
+1)SELECT * FROM tbl_menus // stanumenq hetevyal karucvacqi array
+$menus = [
+			[
+				'id'        => 1
+				'title'     => 'Ansharj guyq',
+				'parent_id' => 0
+			],
+			[
+				'id'        => 2
+				'title'     => 'Transport',
+				'parent_id' => 0
+			],
+			[
+				'id'        => 3
+				'title'     => 'Bnakaranner',
+				'parent_id' => 1
+			],
+			[
+				'id'        => 4
+				'title'     => 'Tner',
+				'parent_id' => 3
+			],
+			[
+				'id'        => 5
+				'title'     => 'Tner Armavirum',
+				'parent_id' => 4
+			]
+			//....
+			//....
+		];
+		
+//php kodn klini hetevyaln
+
+	/*
+     * Create $menus tree by parent_id
+     * 
+     * @param Array $menus
+     * @return Array
+     */
+    function CreateTree($menus,$parent_id = 0,$tab='')
+    {
+        $result = array();
+        if( $parent_id > 0 ){ $tab.='-'; }
+        foreach($menus as $v)
+        {
+            if( $parent_id == $v->parent_id )
+            {
+                $result[$v->id]['parent_id'] = $v->parent_id;
+                $result[$v->id] = $tab.$v->title;
+                $result += CreateTree($menus,$v->id,$tab);
+            }
+        }
+        return $result;
+    }
+CreateTree($menus);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
